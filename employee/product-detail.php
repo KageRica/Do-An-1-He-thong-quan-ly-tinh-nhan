@@ -1,19 +1,9 @@
 <?php
-// ============================================================
-// employee/product-detail.php
-// Xem thông tin chi tiết 1 sản phẩm (chỉ đọc).
-// Chỉ hiển thị các trường phù hợp với quyền Nhân viên:
-// mã, tên, loại, thương hiệu, giá bán, tồn kho, trạng thái.
-// KHÔNG hiển thị giá nhập (thông tin nhạy cảm dành cho Quản lý).
-// ============================================================
-
 require_once __DIR__ . '/../includes/employee_guard.php';
 require_once __DIR__ . '/../includes/product_helper.php';
 require_once __DIR__ . '/../config/database.php';
 
-// ------------------------------------------------------------
 // 1. Lấy và kiểm tra tham số id
-// ------------------------------------------------------------
 
 $productId = (int) ($_GET['id'] ?? 0);
 
@@ -22,9 +12,7 @@ if ($productId <= 0) {
     die("Mã sản phẩm không hợp lệ.");
 }
 
-// ------------------------------------------------------------
 // 2. Truy vấn thông tin sản phẩm + tổng tồn kho
-// ------------------------------------------------------------
 
 $sql = "
     SELECT
