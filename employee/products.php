@@ -1,4 +1,7 @@
 <?php
+// employee/products.php
+// Chức năng: tìm kiếm và xem danh sách sản phẩm (chỉ đọc).
+// Nhân viên KHÔNG được thêm/sửa/xóa sản phẩm ở trang này.
 
 require_once __DIR__ . '/../includes/employee_guard.php';
 require_once __DIR__ . '/../includes/product_helper.php';
