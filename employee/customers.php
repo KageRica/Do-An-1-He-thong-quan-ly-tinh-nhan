@@ -1,24 +1,8 @@
 <?php
-// ============================================================
-// employee/customers.php
-// Bước 6: Nhân viên - Quản lý khách hàng.
-// Chức năng: xem danh sách, tìm kiếm, thêm khách hàng.
-// Bảng customers thực tế chỉ có 4 cột:
-// customer_id, full_name, phone, created_at.
-// KHÔNG có customer_code/email/address/note trong database.
-// Mã khách hàng (KH0001...) CHỈ là format hiển thị bằng PHP,
-// dựa trên customer_id, không lưu vào database.
-// Chưa triển khai sửa/xóa khách hàng ở bước này.
-// ============================================================
-
 require_once __DIR__ . '/../includes/employee_guard.php';
 require_once __DIR__ . '/../includes/product_helper.php';
 require_once __DIR__ . '/../config/database.php';
-
-// ------------------------------------------------------------
 // 1. Xử lý THÊM khách hàng mới (khi có submit form POST)
-// ------------------------------------------------------------
-
 $errorMessage = '';
 $successMessage = '';
 
@@ -60,11 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
 if (isset($_GET['msg']) && $_GET['msg'] === 'added') {
     $successMessage = 'Thêm khách hàng thành công.';
 }
-
-// ------------------------------------------------------------
 // 2. Tìm kiếm + phân trang danh sách khách hàng (GET)
-// ------------------------------------------------------------
-
 $keyword = trim($_GET['keyword'] ?? '');
 $page = (int) ($_GET['page'] ?? 1);
 if ($page < 1) {
