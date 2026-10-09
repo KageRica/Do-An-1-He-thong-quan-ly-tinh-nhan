@@ -1,0 +1,1500 @@
+/* ================================================================
+   Design system cho khu vực Nhân viên.
+
+
+   Mục lục (đúng thứ tự áp dụng):
+     1. Design tokens
+     2. Reset / base
+     3. Typography
+     4. Layout
+     5. Header / navigation
+     6. Buttons
+     7. Forms
+     8. Tables
+     9. States (empty / alert / badge)
+    10. Cards
+    11. Dashboard
+    12. Sales
+    13. Invoice
+    14. AI
+    15. Auth (login) — hook điểm, style thật nằm trong login.php
+    16. Responsive
+    17. Print
+   ================================================================ */
+
+/* ----------------------------------------------------------------
+   1. DESIGN TOKENS
+   ---------------------------------------------------------------- */
+:root {
+  /* Color — neutral (graphite / ink) */
+  --color-ink: #10181f;
+  --color-ink-soft: #1e2b34;
+  --color-muted: #5c6b74;
+  --color-muted-soft: #8896a0;
+  --color-border: #dde3e6;
+  --color-border-soft: #e9edef;
+  --color-bg: #f2f5f6;
+  --color-surface: #ffffff;
+
+  /* Color — primary (optical teal / lens coating) */
+  --color-primary: #0d6b62;
+  --color-primary-hover: #0a544d;
+  --color-primary-soft: #e3f2ef;
+  --color-primary-line: #bfe0da;
+
+  /* Color — accent (copper, reserved for AI / highlight only) */
+  --color-accent: #a85a2a;
+  --color-accent-soft: #f7ebe0;
+  --color-accent-line: #eac9ab;
+
+  /* Color — semantic */
+  --color-success: #16794f;
+  --color-success-bg: #e2f4e9;
+  --color-success-line: #b9e3c8;
+
+  --color-warning: #92600a;
+  --color-warning-bg: #fbf0d9;
+  --color-warning-line: #efd699;
+
+  --color-danger: #b3261e;
+  --color-danger-bg: #fbe7e5;
+  --color-danger-line: #f2c3bf;
+
+  /* Typography */
+  --font-display:
+    "Space Grotesk", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-body:
+    "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
+    Arial, sans-serif;
+
+  /* Spacing scale — base 4px */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+
+  /* Radius */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+
+  /* Shadow — restrained, single elevation step */
+  --shadow-sm: 0 1px 2px rgba(16, 24, 31, 0.06);
+  --shadow-md: 0 4px 16px rgba(16, 24, 31, 0.08);
+
+  /* Motion */
+  --ease: cubic-bezier(0.2, 0, 0, 1);
+  --duration-fast: 150ms;
+  --duration-base: 200ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ----------------------------------------------------------------
+   2. RESET / BASE
+   ---------------------------------------------------------------- */
+* {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  background-color: var(--color-bg);
+  color: var(--color-ink);
+  font-size: 15px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+a {
+  color: inherit;
+}
+
+button {
+  font-family: inherit;
+}
+
+/* Visible, deliberate focus state everywhere — never remove without replacing */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+/* ----------------------------------------------------------------
+   3. TYPOGRAPHY
+   ---------------------------------------------------------------- */
+h1,
+h2,
+h3 {
+  font-family: var(--font-display);
+  color: var(--color-ink);
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+}
+
+.page-header h1 {
+  font-size: 24px;
+  font-weight: 600;
+  margin: 0;
+  color: var(--color-ink);
+}
+
+.welcome-box h1 {
+  font-size: 26px;
+  font-weight: 600;
+  margin: 0 0 var(--space-1) 0;
+  color: var(--color-ink);
+}
+
+.welcome-box p {
+  margin: 0;
+  color: var(--color-muted);
+  font-size: 14.5px;
+}
+
+.form-card h2 {
+  font-family: var(--font-display);
+  margin: 0 0 var(--space-4) 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--color-ink);
+}
+
+/* tabular numbers wherever money/quantities appear */
+.product-table td:where(:nth-child(5), :nth-child(6)),
+.total-box,
+.kpi-value {
+  font-variant-numeric: tabular-nums;
+}
+
+/* ----------------------------------------------------------------
+   4. LAYOUT
+   ---------------------------------------------------------------- */
+.main-content {
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: var(--space-6) var(--space-5) var(--space-8);
+}
+
+/* ----------------------------------------------------------------
+   5. HEADER / NAVIGATION
+   ---------------------------------------------------------------- */
+.topbar {
+  background-color: var(--color-ink);
+  color: #fff;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.topbar-inner {
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: 0 var(--space-5);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-5);
+  min-height: 60px;
+  flex-wrap: wrap;
+}
+
+.topbar .brand {
+  font-family: var(--font-display);
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  padding: var(--space-3) 0;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.topbar .brand::before {
+  content: "";
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #4fd1bf;
+  box-shadow: 0 0 0 3px rgba(79, 209, 191, 0.18);
+  flex-shrink: 0;
+}
+
+/* Primary navigation — added in Bước 9 for wayfinding. Purely additive:
+   no existing JS/PHP references .topnav, safe to introduce. */
+.topnav {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  flex-wrap: wrap;
+  flex: 1;
+}
+
+.topnav a {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+  font-size: 13.5px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.68);
+  transition:
+    background-color var(--duration-fast) var(--ease),
+    color var(--duration-fast) var(--ease);
+}
+
+.topnav a:hover {
+  background-color: rgba(255, 255, 255, 0.08);
+  color: #fff;
+}
+
+.topnav a.is-active {
+  background-color: rgba(79, 209, 191, 0.14);
+  color: #7fe3d3;
+}
+
+.topbar .user-info {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  font-size: 13.5px;
+  color: rgba(255, 255, 255, 0.85);
+  white-space: nowrap;
+}
+
+.topbar .user-info .role-badge {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+}
+
+.topbar .btn-logout {
+  background-color: transparent;
+  color: rgba(255, 255, 255, 0.75);
+  text-decoration: none;
+  padding: 7px 12px;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  font-weight: 500;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  transition:
+    background-color var(--duration-fast) var(--ease),
+    color var(--duration-fast) var(--ease),
+    border-color var(--duration-fast) var(--ease);
+}
+
+.topbar .btn-logout:hover {
+  background-color: rgba(217, 79, 66, 0.16);
+  border-color: rgba(217, 79, 66, 0.4);
+  color: #ffb4ab;
+}
+
+/* ----------------------------------------------------------------
+   6. BUTTONS
+   Rule of thumb: one primary action per view. Everything else is
+   secondary or link-level.
+   ---------------------------------------------------------------- */
+.btn-primary,
+.btn-secondary,
+.btn-link {
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  min-height: 40px;
+}
+
+.btn-primary {
+  background-color: var(--color-primary);
+  color: #fff;
+  border: 1px solid var(--color-primary);
+  padding: 9px 18px;
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition:
+    background-color var(--duration-fast) var(--ease),
+    border-color var(--duration-fast) var(--ease),
+    transform var(--duration-fast) var(--ease);
+}
+
+.btn-primary:hover {
+  background-color: var(--color-primary-hover);
+  border-color: var(--color-primary-hover);
+}
+
+.btn-primary:active {
+  transform: translateY(1px);
+}
+
+.btn-primary:disabled {
+  background-color: var(--color-border);
+  border-color: var(--color-border);
+  color: var(--color-muted-soft);
+  cursor: not-allowed;
+  transform: none;
+}
+
+.btn-secondary {
+  background-color: var(--color-surface);
+  color: var(--color-ink);
+  border: 1px solid var(--color-border);
+  padding: 9px 16px;
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition:
+    background-color var(--duration-fast) var(--ease),
+    border-color var(--duration-fast) var(--ease);
+}
+
+.btn-secondary:hover {
+  background-color: var(--color-bg);
+  border-color: var(--color-muted-soft);
+}
+
+.btn-link {
+  color: var(--color-primary);
+  text-decoration: none;
+  font-size: 13.5px;
+  font-weight: 600;
+  background: none;
+  border: none;
+  padding: 4px 2px;
+  min-height: auto;
+  border-radius: 4px;
+}
+
+.btn-link:hover {
+  text-decoration: underline;
+}
+
+/* ----------------------------------------------------------------
+   7. FORMS
+   ---------------------------------------------------------------- */
+.search-form {
+  display: flex;
+  gap: var(--space-2);
+  margin-bottom: var(--space-5);
+  flex-wrap: wrap;
+}
+
+.search-form-align-end {
+  align-items: flex-end;
+}
+
+.search-form input[type="text"] {
+  flex: 1;
+  min-width: 240px;
+}
+
+input[type="text"],
+input[type="number"],
+select {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  font-size: 14.5px;
+  font-family: inherit;
+  color: var(--color-ink);
+  background-color: var(--color-surface);
+  min-height: 40px;
+  transition:
+    border-color var(--duration-fast) var(--ease),
+    box-shadow var(--duration-fast) var(--ease);
+}
+
+input[type="text"]::placeholder {
+  color: var(--color-muted-soft);
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus,
+select:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px var(--color-primary-soft);
+  outline: none;
+}
+
+.customer-form input[type="text"],
+.add-customer-form input[type="text"],
+.form-group input[type="text"] {
+  box-sizing: border-box;
+}
+
+.form-group {
+  flex: 1;
+  min-width: 220px;
+}
+
+.form-group label,
+.customer-form label,
+.add-customer-form label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-muted);
+}
+
+.customer-form .form-row,
+.add-customer-form .form-row,
+.form-row {
+  display: flex;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+  margin-bottom: var(--space-4);
+}
+
+.customer-form .required,
+.required {
+  color: var(--color-danger);
+}
+
+/* ----------------------------------------------------------------
+   8b. UTILITY CLASSES
+   Thay cho các inline style lặp lại (khu vực Quản lý) - giữ đúng
+   giá trị hiển thị cũ, chỉ chuyển sang class dùng chung.
+   ---------------------------------------------------------------- */
+.u-full-width {
+  width: 100%;
+}
+
+.u-hint-text {
+  font-size: 12.5px;
+  color: var(--color-muted-soft);
+  margin-top: var(--space-2);
+}
+
+.u-text-center {
+  text-align: center;
+  color: var(--color-muted-soft);
+}
+
+.u-inline-form {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.u-select-compact {
+  min-height: 32px;
+  padding: 4px 8px;
+}
+
+.u-wrap-cell {
+  max-width: 260px;
+  white-space: normal;
+}
+
+.u-row-highlight {
+  background-color: var(--color-primary-soft);
+}
+
+/* ----------------------------------------------------------------
+   8. TABLES
+   ---------------------------------------------------------------- */
+.product-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: var(--color-surface);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--color-border-soft);
+}
+
+.product-table th,
+.product-table td {
+  padding: 13px 16px;
+  text-align: left;
+  border-bottom: 1px solid var(--color-border-soft);
+  font-size: 14px;
+  vertical-align: middle;
+}
+
+.product-table th {
+  background-color: #fafbfc;
+  color: var(--color-muted);
+  font-size: 11.5px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.product-table tbody tr {
+  transition: background-color var(--duration-fast) var(--ease);
+}
+
+.product-table tbody tr:hover {
+  background-color: #f8fafa;
+}
+
+.product-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* Result-count line above tables — new, additive */
+.result-count {
+  font-size: 13px;
+  color: var(--color-muted);
+  margin: 0 0 var(--space-3) 2px;
+}
+
+/* ----------------------------------------------------------------
+   9. STATES — empty / alert / badge
+   ---------------------------------------------------------------- */
+.empty-state {
+  background-color: var(--color-surface);
+  border: 1px dashed var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-7) var(--space-5);
+  text-align: center;
+  color: var(--color-muted);
+}
+
+.empty-state p {
+  margin: 0 0 var(--space-3) 0;
+}
+
+.empty-state .btn-primary,
+.empty-state .btn-secondary {
+  margin-top: var(--space-2);
+}
+
+.alert {
+  padding: 11px 14px;
+  border-radius: var(--radius-sm);
+  font-size: 13.5px;
+  margin-bottom: var(--space-4);
+  border: 1px solid transparent;
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.alert::before {
+  flex-shrink: 0;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.alert-success {
+  background-color: var(--color-success-bg);
+  color: var(--color-success);
+  border-color: var(--color-success-line);
+}
+
+.alert-success::before {
+  content: "✓";
+}
+
+.alert-error {
+  background-color: var(--color-danger-bg);
+  color: var(--color-danger);
+  border-color: var(--color-danger-line);
+}
+
+.alert-error::before {
+  content: "!";
+}
+
+.stock-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 9px;
+  border-radius: 20px;
+  font-size: 11.5px;
+  margin-left: 6px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  border: 1px solid transparent;
+}
+
+/* Stock/status is never conveyed by color alone — a dot + text label ships in every state */
+.stock-badge::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.stock-ok {
+  background-color: var(--color-success-bg);
+  color: var(--color-success);
+  border-color: var(--color-success-line);
+}
+.stock-ok::before {
+  background-color: var(--color-success);
+}
+
+.stock-low {
+  background-color: var(--color-warning-bg);
+  color: var(--color-warning);
+  border-color: var(--color-warning-line);
+}
+.stock-low::before {
+  background-color: var(--color-warning);
+}
+
+.stock-out {
+  background-color: var(--color-danger-bg);
+  color: var(--color-danger);
+  border-color: var(--color-danger-line);
+}
+.stock-out::before {
+  background-color: var(--color-danger);
+}
+
+.pagination {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  margin-top: var(--space-5);
+  justify-content: center;
+}
+
+.page-info {
+  font-size: 13.5px;
+  color: var(--color-muted);
+}
+
+/* ----------------------------------------------------------------
+   10. CARDS
+   ---------------------------------------------------------------- */
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-5);
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.form-card {
+  background-color: var(--color-surface);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border-soft);
+  box-shadow: var(--shadow-sm);
+  padding: var(--space-5);
+  margin-bottom: var(--space-5);
+}
+
+.detail-card {
+  background-color: var(--color-surface);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border-soft);
+  box-shadow: var(--shadow-sm);
+  padding: var(--space-2) var(--space-5);
+  max-width: 640px;
+}
+
+.detail-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.detail-table th,
+.detail-table td {
+  padding: 14px 10px;
+  text-align: left;
+  border-bottom: 1px solid var(--color-border-soft);
+  font-size: 14px;
+}
+
+.detail-table tr:last-child th,
+.detail-table tr:last-child td {
+  border-bottom: none;
+}
+
+.detail-table th {
+  width: 180px;
+  color: var(--color-muted);
+  font-weight: 500;
+  font-size: 13px;
+}
+
+/* Product detail — spec-sheet layout (replaces a long single-column table) */
+.detail-head {
+  padding: var(--space-4) 0 var(--space-4) 0;
+  border-bottom: 1px solid var(--color-border-soft);
+}
+
+.detail-head .detail-eyebrow {
+  font-size: 12px;
+  color: var(--color-muted);
+  margin-bottom: 4px;
+}
+
+.detail-head h2 {
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.detail-price {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding: var(--space-4) 0;
+  border-bottom: 1px solid var(--color-border-soft);
+}
+
+.detail-price .label {
+  font-size: 13px;
+  color: var(--color-muted);
+}
+
+.detail-price .value {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+/* Nhãn nhóm nhỏ giữa các block trong detail-card (vd: "Đặc trưng sản phẩm"
+   xen giữa detail-price và spec-grid tồn kho/trạng thái). Cùng kiểu chữ
+   với .spec-label để không tạo thêm cấp typography mới. */
+.detail-section-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  padding-top: var(--space-4);
+}
+
+.spec-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0;
+}
+
+.spec-item {
+  padding: var(--space-4) 0;
+  border-bottom: 1px solid var(--color-border-soft);
+}
+
+.spec-item:nth-last-child(-n + 2) {
+  border-bottom: none;
+}
+
+.spec-label {
+  display: block;
+  font-size: 12px;
+  color: var(--color-muted);
+  margin-bottom: 4px;
+}
+
+.spec-value {
+  font-size: 14.5px;
+  font-weight: 500;
+  color: var(--color-ink);
+}
+
+/* ----------------------------------------------------------------
+   11. DASHBOARD
+   ---------------------------------------------------------------- */
+.welcome-box {
+  margin-bottom: var(--space-6);
+}
+
+.dash-section {
+  margin-bottom: var(--space-6);
+}
+
+.dash-section-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-3);
+  margin-bottom: var(--space-4);
+}
+
+.dash-section-head h2 {
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-muted);
+  margin: 0;
+}
+
+.dash-section-head .section-link {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-primary);
+  text-decoration: none;
+}
+
+.dash-section-head .section-link:hover {
+  text-decoration: underline;
+}
+
+/* Operational summary (KPI) */
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-4);
+}
+
+.kpi-card {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border-soft);
+  border-radius: var(--radius-md);
+  padding: var(--space-4) var(--space-5);
+  box-shadow: var(--shadow-sm);
+}
+
+.kpi-label {
+  font-size: 12.5px;
+  color: var(--color-muted);
+  margin-bottom: var(--space-2);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.kpi-value {
+  font-family: var(--font-display);
+  font-size: 26px;
+  font-weight: 600;
+  color: var(--color-ink);
+  line-height: 1.2;
+}
+
+.kpi-value.is-warning {
+  color: var(--color-warning);
+}
+
+.kpi-hint {
+  font-size: 12px;
+  color: var(--color-muted-soft);
+  margin-top: 4px;
+}
+
+/* Primary functions — .function-grid/.function-card are Bước 4 names,
+   kept as-is and restyled to read as a real workspace, not a landing page. */
+.function-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-4);
+}
+
+.function-card {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border-soft);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5);
+  text-decoration: none;
+  color: var(--color-ink);
+  box-shadow: var(--shadow-sm);
+  transition:
+    box-shadow var(--duration-base) var(--ease),
+    border-color var(--duration-base) var(--ease),
+    transform var(--duration-base) var(--ease);
+  min-height: 168px;
+}
+
+.function-card:hover {
+  box-shadow: var(--shadow-md);
+  border-color: var(--color-primary-line);
+  transform: translateY(-2px);
+}
+
+.function-card .icon {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-sm);
+  background-color: var(--color-primary-soft);
+  color: var(--color-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 19px;
+  margin-bottom: var(--space-4);
+}
+
+.function-card h3 {
+  margin: 0 0 var(--space-1) 0;
+  font-size: 16px;
+  font-weight: 600;
+  font-family: var(--font-display);
+}
+
+.function-card p {
+  margin: 0 0 var(--space-3) 0;
+  font-size: 13px;
+  color: var(--color-muted);
+  flex: 1;
+}
+
+.function-card .card-stat {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--color-primary);
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--color-border-soft);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.function-card .card-stat .arrow {
+  transition: transform var(--duration-base) var(--ease);
+}
+
+.function-card:hover .card-stat .arrow {
+  transform: translateX(3px);
+}
+
+.function-card.ai-card {
+  border-color: var(--color-accent-line);
+  background-color: var(--color-accent-soft);
+}
+
+.function-card.ai-card .icon {
+  background-color: rgba(168, 90, 42, 0.14);
+  color: var(--color-accent);
+}
+
+.function-card.ai-card h3 {
+  color: var(--color-accent);
+}
+
+.function-card.ai-card .card-stat {
+  color: var(--color-accent);
+  border-top-color: var(--color-accent-line);
+}
+
+/* Recent activity */
+.activity-list {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border-soft);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+}
+
+.activity-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding: var(--space-4) var(--space-5);
+  border-bottom: 1px solid var(--color-border-soft);
+  text-decoration: none;
+  color: inherit;
+  transition: background-color var(--duration-fast) var(--ease);
+}
+
+.activity-item:last-child {
+  border-bottom: none;
+}
+
+.activity-item:hover {
+  background-color: #f8fafa;
+}
+
+.activity-main {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.activity-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-ink);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.activity-meta {
+  font-size: 12.5px;
+  color: var(--color-muted);
+}
+
+.activity-amount {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 14.5px;
+  color: var(--color-ink);
+  white-space: nowrap;
+}
+
+/* AI feature banner on dashboard */
+.ai-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-5);
+  background: linear-gradient(
+    135deg,
+    var(--color-accent-soft) 0%,
+    #fdf7f1 100%
+  );
+  border: 1px solid var(--color-accent-line);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5) var(--space-6);
+  flex-wrap: wrap;
+}
+
+.ai-banner-text {
+  max-width: 560px;
+}
+
+.ai-banner-eyebrow {
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+  margin-bottom: var(--space-2);
+}
+
+.ai-banner-text h2 {
+  font-family: var(--font-display);
+  font-size: 19px;
+  font-weight: 600;
+  margin: 0 0 var(--space-2) 0;
+  color: var(--color-ink);
+}
+
+.ai-banner-text p {
+  margin: 0;
+  font-size: 13.5px;
+  color: var(--color-muted);
+  line-height: 1.6;
+}
+
+.ai-banner .btn-primary {
+  background-color: var(--color-accent);
+  border-color: var(--color-accent);
+  flex-shrink: 0;
+}
+
+.ai-banner .btn-primary:hover {
+  background-color: #8a4820;
+  border-color: #8a4820;
+}
+
+/* ----------------------------------------------------------------
+   12. SALES
+   ---------------------------------------------------------------- */
+.sales-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(440px, 540px);
+  gap: var(--space-5);
+  align-items: start;
+}
+
+.sales-col {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+/* Right column carries transaction state — gets visual priority */
+.sales-col.is-invoice {
+  position: sticky;
+  top: var(--space-5);
+}
+
+.sales-col.is-invoice .form-card:last-child {
+  border-color: var(--color-primary-line);
+  box-shadow: var(--shadow-md);
+}
+
+.result-list {
+  margin-top: var(--space-3);
+  max-height: 360px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.result-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-3);
+  padding: 11px 14px;
+  border: 1px solid var(--color-border-soft);
+  border-radius: var(--radius-sm);
+  background-color: #fafbfc;
+  transition:
+    border-color var(--duration-fast) var(--ease),
+    background-color var(--duration-fast) var(--ease);
+}
+
+.result-item:hover {
+  border-color: var(--color-primary-line);
+  background-color: var(--color-primary-soft);
+}
+
+.result-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.result-title {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--color-ink);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.result-meta {
+  font-size: 12px;
+  color: var(--color-muted);
+}
+
+.result-loading,
+.result-empty-inline {
+  font-size: 13px;
+  color: var(--color-muted);
+  padding: var(--space-3) 2px;
+}
+
+.selected-box {
+  background-color: var(--color-primary-soft);
+  border: 1px solid var(--color-primary-line);
+  border-radius: var(--radius-sm);
+  padding: 11px 14px;
+  font-size: 13px;
+  color: var(--color-primary-hover);
+  margin-bottom: var(--space-3);
+  font-weight: 500;
+}
+
+.add-customer-form {
+  margin-top: var(--space-4);
+  padding-top: var(--space-4);
+  border-top: 1px dashed var(--color-border);
+}
+
+/* Selector có độ ưu tiên cao hơn input[type="number"] (width:100%, padding 10px 12px)
+   để ô số lượng luôn giữ đủ rộng, không bị ép về 0 trong cột hẹp. */
+.product-table .qty-input,
+input[type="number"].qty-input {
+  width: 76px;
+  min-width: 76px;
+  padding: 6px 4px 6px 8px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  min-height: 36px;
+  text-align: center;
+}
+
+/* Bảng giỏ hàng nằm trong cột phải hẹp: thu gọn padding, cột SL không bao giờ bị co */
+#cartTable th,
+#cartTable td {
+  padding: 10px 8px;
+}
+
+#cartTable th:nth-child(3),
+#cartTable td:nth-child(3) {
+  width: 92px;
+  min-width: 92px;
+}
+
+#cartTable td:first-child {
+  min-width: 130px;
+}
+
+#cartTable td:nth-child(2),
+#cartTable td:nth-child(4) {
+  white-space: nowrap;
+}
+
+.total-box {
+  font-family: var(--font-display);
+  font-size: 19px;
+  font-weight: 700;
+  color: var(--color-ink);
+  text-align: right;
+  margin: var(--space-4) 0;
+  padding-top: var(--space-3);
+  border-top: 1px dashed var(--color-border);
+}
+
+#paymentMethod {
+  margin-top: 6px;
+}
+
+#btnCheckout {
+  width: 100%;
+  padding: 12px 18px;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+#checkoutMessage:empty {
+  display: none;
+}
+
+/* ----------------------------------------------------------------
+   13. INVOICE (document-like presentation)
+   ---------------------------------------------------------------- */
+.invoice-doc {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border-soft);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  padding: var(--space-6);
+  max-width: 720px;
+  margin-bottom: var(--space-5);
+}
+
+.invoice-doc-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding-bottom: var(--space-5);
+  margin-bottom: var(--space-5);
+  border-bottom: 1px solid var(--color-border-soft);
+}
+
+.invoice-brand {
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--color-muted);
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  margin-bottom: var(--space-2);
+}
+
+.invoice-doc-head h1 {
+  font-size: 22px;
+  margin: 0 0 4px 0;
+}
+
+.invoice-code {
+  font-family: var(--font-display);
+  font-size: 13.5px;
+  color: var(--color-muted);
+}
+
+.invoice-actions {
+  display: flex;
+  gap: var(--space-2);
+  flex-shrink: 0;
+}
+
+/* ----------------------------------------------------------------
+   14. AI
+   ---------------------------------------------------------------- */
+.ai-intro {
+  font-size: 13.5px;
+  color: var(--color-muted);
+  margin: -8px 0 var(--space-4) 0;
+  max-width: 640px;
+  line-height: 1.6;
+}
+
+.rank-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background-color: var(--color-accent-soft);
+  color: var(--color-accent);
+  font-size: 11.5px;
+  font-weight: 700;
+  margin-right: 8px;
+  flex-shrink: 0;
+}
+
+.match-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--color-accent);
+}
+
+.match-track {
+  width: 56px;
+  height: 5px;
+  border-radius: 3px;
+  background-color: var(--color-accent-soft);
+  overflow: hidden;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.match-track > span {
+  display: block;
+  height: 100%;
+  background-color: var(--color-accent);
+  border-radius: 3px;
+}
+
+/* ----------------------------------------------------------------
+   15. AUTH
+   Login page keeps its own inline <style> for independence from
+   this stylesheet (matches original architecture). No rule needed
+   here besides letting body tokens cascade if ever linked.
+   ---------------------------------------------------------------- */
+
+/* ----------------------------------------------------------------
+   16. RESPONSIVE
+   ---------------------------------------------------------------- */
+@media (max-width: 1180px) {
+  .kpi-grid,
+  .function-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .sales-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .sales-col.is-invoice {
+    position: static;
+  }
+}
+
+@media (max-width: 900px) {
+  .main-content {
+    padding: var(--space-5) var(--space-4) var(--space-7);
+  }
+
+  .topbar-inner {
+    padding: var(--space-3) var(--space-4);
+  }
+
+  .topnav {
+    order: 3;
+    width: 100%;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    padding-top: var(--space-2);
+    margin-top: var(--space-1);
+  }
+}
+
+@media (max-width: 640px) {
+  .kpi-grid,
+  .function-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .product-table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+
+  .detail-table th {
+    width: 130px;
+  }
+
+  .customer-form .form-row,
+  .add-customer-form .form-row {
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+
+  .ai-banner {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .invoice-doc {
+    padding: var(--space-4);
+  }
+
+  .invoice-doc-head {
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+}
+
+/* ----------------------------------------------------------------
+   17. PRINT (employee/invoice.php)
+   ---------------------------------------------------------------- */
+@media print {
+  .topbar,
+  .page-header,
+  .invoice-actions,
+  .btn-primary,
+  .btn-secondary,
+  .btn-link {
+    display: none !important;
+  }
+
+  body {
+    background: #fff;
+  }
+
+  .main-content {
+    padding: 0;
+    max-width: none;
+  }
+
+  .invoice-doc {
+    box-shadow: none;
+    border: none;
+    padding: 0;
+    max-width: none;
+  }
+}
