@@ -1,17 +1,10 @@
 <?php
-// ============================================================
-// employee/products.php
-// Chức năng: tìm kiếm và xem danh sách sản phẩm (chỉ đọc).
-// Nhân viên KHÔNG được thêm/sửa/xóa sản phẩm ở trang này.
-// ============================================================
 
 require_once __DIR__ . '/../includes/employee_guard.php';
 require_once __DIR__ . '/../includes/product_helper.php';
 require_once __DIR__ . '/../config/database.php';
 
-// ------------------------------------------------------------
 // 1. Lấy và kiểm tra tham số đầu vào (GET)
-// ------------------------------------------------------------
 
 // Từ khóa tìm kiếm (mã / tên / thương hiệu)
 $keyword = trim($_GET['keyword'] ?? '');
@@ -26,9 +19,7 @@ if ($page < 1) {
 $perPage = 10;
 $offset = ($page - 1) * $perPage;
 
-// ------------------------------------------------------------
 // 2. Xây dựng câu điều kiện tìm kiếm (dùng chung cho cả 2 truy vấn)
-// ------------------------------------------------------------
 
 $whereSql = "WHERE p.status = 'active'";
 $params = [];
@@ -41,9 +32,7 @@ if ($keyword !== '') {
     $params[] = $likeKeyword;
 }
 
-// ------------------------------------------------------------
 // 3. Đếm tổng số sản phẩm phù hợp (phục vụ phân trang)
-// ------------------------------------------------------------
 
 $countSql = "SELECT COUNT(*) FROM products p " . $whereSql;
 $countStmt = $pdo->prepare($countSql);
@@ -58,9 +47,7 @@ if ($totalPages > 0 && $page > $totalPages) {
     $offset = ($page - 1) * $perPage;
 }
 
-// ------------------------------------------------------------
 // 4. Truy vấn danh sách sản phẩm + tồn kho SUM từ product_batches
-// ------------------------------------------------------------
 
 $listSql = "
     SELECT
