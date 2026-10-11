@@ -21,12 +21,11 @@
    - Tạo trước 13 trang khung (8 trang Nhân viên và 5 trang Quản lý).
      Các trang hiện kiểm tra quyền, kết nối cơ sở dữ liệu và hiển thị tên
      chức năng cùng mã UC. Hai trang Dashboard có lấy thử số liệu từ CSDL.
-
+   - UC-02 Lập hóa đơn
+   - UC-04 Quản lý khách hàng
+   - UC-05 Xem sản phẩm
 2. NHỮNG PHẦN CHƯA LÀM
    Các chức năng chính dự kiến làm:
-   UC-02 Lập hóa đơn
-   UC-04 Quản lý khách hàng
-   UC-05 Xem sản phẩm
    UC-07 Nhập kho
 
 3. CÁC TÀI KHOẢN CÓ THỂ ĐĂNG NHẬP
