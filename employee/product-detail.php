@@ -1,4 +1,10 @@
 <?php
+// employee/product-detail.php
+// Xem thông tin chi tiết 1 sản phẩm (chỉ đọc).
+// Chỉ hiển thị các trường phù hợp với quyền Nhân viên:
+// mã, tên, loại, thương hiệu, giá bán, tồn kho, trạng thái.
+// KHÔNG hiển thị giá nhập (thông tin nhạy cảm dành cho Quản lý).
+
 require_once __DIR__ . '/../includes/employee_guard.php';
 require_once __DIR__ . '/../includes/product_helper.php';
 require_once __DIR__ . '/../config/database.php';
