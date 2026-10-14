@@ -24,9 +24,11 @@
    - UC-02 Lập hóa đơn
    - UC-04 Quản lý khách hàng
    - UC-05 Xem sản phẩm
+   - UC-06: Quản lý sản phẩm
+   - UC-07 Nhập kho
 2. NHỮNG PHẦN CHƯA LÀM
    Các chức năng chính dự kiến làm:
-   UC-07 Nhập kho
+
 
 3. CÁC TÀI KHOẢN CÓ THỂ ĐĂNG NHẬP
    Quản lý:  admin      / manager123
